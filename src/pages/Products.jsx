@@ -24,7 +24,7 @@ export default function Products() {
   });
 
   return (
-    <div>
+    <div className="animate-page">
       {/* Page header */}
       <div className="bg-gradient-to-r from-blue-700 to-blue-600 text-white py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

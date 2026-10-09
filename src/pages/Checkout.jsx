@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import Button from '../components/Button';
 
@@ -38,7 +37,6 @@ function FormField({ label, id, type = 'text', required, value, onChange, placeh
 
 export default function Checkout() {
   const { items, total, clearCart } = useCart();
-  const shouldReduceMotion = useReducedMotion();
 
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
   const [payMethod, setPayMethod] = useState('telebirr');
@@ -75,28 +73,9 @@ export default function Checkout() {
   /* ── Success ── */
   if (success) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center px-4 py-12">
-        <motion.div
-          className="bg-white rounded-2xl border border-gray-100 shadow-md p-10 max-w-md w-full text-center"
-          initial={shouldReduceMotion
-            ? { opacity: 0 }
-            : { opacity: 0, scale: 0.85, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={shouldReduceMotion
-            ? { duration: 0.2 }
-            : { type: 'spring', stiffness: 260, damping: 22 }}
-        >
-          <motion.div
-            className="text-6xl mb-4"
-            aria-hidden="true"
-            initial={shouldReduceMotion ? {} : { scale: 0, rotate: -15 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={shouldReduceMotion
-              ? { duration: 0 }
-              : { type: 'spring', stiffness: 300, damping: 18, delay: 0.15 }}
-          >
-            🎉
-          </motion.div>
+      <div className="animate-page min-h-[60vh] flex items-center justify-center px-4 py-12">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-10 max-w-md w-full text-center">
+          <div className="text-6xl mb-4" aria-hidden="true">🎉</div>
           <h1 className="text-2xl font-extrabold text-gray-900 mb-2">Order Confirmed!</h1>
           <p className="text-gray-500 text-sm leading-relaxed mb-4">
             Demo payment successful. Your digital products are ready for download.
@@ -112,7 +91,7 @@ export default function Checkout() {
           <Link to="/products">
             <Button size="lg" fullWidth>Continue Shopping</Button>
           </Link>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -120,7 +99,7 @@ export default function Checkout() {
   /* ── Empty cart ── */
   if (items.length === 0) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center px-4 py-12">
+      <div className="animate-page min-h-[60vh] flex items-center justify-center px-4 py-12">
         <div className="text-center">
           <p className="text-6xl mb-4" aria-hidden="true">🛒</p>
           <h2 className="text-xl font-bold text-gray-700 mb-2">Nothing to checkout</h2>
@@ -132,7 +111,7 @@ export default function Checkout() {
   }
 
   return (
-    <div>
+    <div className="animate-page">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-700 to-blue-600 text-white py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,7 +123,7 @@ export default function Checkout() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-          {/* Form — no animation on form fields per requirements */}
+          {/* Form */}
           <form
             onSubmit={handleSubmit}
             noValidate
@@ -220,12 +199,9 @@ export default function Checkout() {
           </form>
 
           {/* Order summary */}
-          <motion.aside
+          <aside
             className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 h-fit sticky top-20"
             aria-label="Order summary"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut', delay: 0.15 }}
           >
             <h2 className="text-base font-bold text-gray-900 mb-4">Order Summary</h2>
             <ul className="space-y-3 mb-4">
@@ -251,7 +227,7 @@ export default function Checkout() {
             <Link to="/cart" className="block text-center text-xs text-blue-600 hover:underline mt-3">
               ← Edit cart
             </Link>
-          </motion.aside>
+          </aside>
         </div>
       </div>
     </div>

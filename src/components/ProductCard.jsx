@@ -1,40 +1,18 @@
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import Button from './Button';
-
-// Variants are exported so ProductGrid can orchestrate the stagger.
-export const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.35, ease: 'easeOut' },
-  },
-};
 
 export default function ProductCard({ product }) {
   const { addItem, isInCart } = useCart();
   const inCart = isInCart(product.id);
-  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <motion.article
-      variants={shouldReduceMotion ? {} : cardVariants}
-      whileHover={shouldReduceMotion ? {} : { y: -4, boxShadow: '0 8px 24px rgba(0,0,0,0.10)' }}
-      transition={{ duration: 0.2 }}
-      className="bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col overflow-hidden group"
-    >
+    <article className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col overflow-hidden group">
       {/* Visual area */}
       <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 h-36 flex items-center justify-center">
-        <motion.span
-          className="text-6xl select-none"
-          aria-hidden="true"
-          whileHover={shouldReduceMotion ? {} : { scale: 1.12 }}
-          transition={{ duration: 0.2 }}
-        >
+        <span className="text-6xl select-none group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
           {product.emoji}
-        </motion.span>
+        </span>
         {product.badge && (
           <span className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
             {product.badge}
@@ -87,6 +65,6 @@ export default function ProductCard({ product }) {
           </div>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

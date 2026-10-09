@@ -1,19 +1,10 @@
-import { motion, useReducedMotion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 
 export default function CartItem({ item }) {
   const { removeItem, increaseQty, decreaseQty } = useCart();
-  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <motion.div
-      layout
-      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 20, transition: { duration: 0.2 } }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      className="flex items-center gap-4 bg-white rounded-xl border border-gray-100 shadow-sm p-4"
-    >
+    <div className="flex items-center gap-4 bg-white rounded-xl border border-gray-100 shadow-sm p-4">
       {/* Emoji icon */}
       <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center shrink-0">
         <span className="text-3xl" aria-hidden="true">{item.emoji}</span>
@@ -60,6 +51,6 @@ export default function CartItem({ item }) {
           Remove
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }

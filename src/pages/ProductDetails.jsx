@@ -1,5 +1,4 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
 import products from '../data/products';
 import { useCart } from '../context/CartContext';
 import Button from '../components/Button';
@@ -9,13 +8,12 @@ export default function ProductDetails() {
   const { id }       = useParams();
   const navigate     = useNavigate();
   const { addItem, isInCart } = useCart();
-  const shouldReduceMotion = useReducedMotion();
 
   const product = products.find((p) => p.id === Number(id));
 
   if (!product) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-24 text-center">
+      <div className="animate-page max-w-6xl mx-auto px-4 py-24 text-center">
         <p className="text-6xl mb-4" aria-hidden="true">😕</p>
         <h1 className="text-xl font-bold text-gray-800 mb-4">Product not found</h1>
         <Link to="/products">
@@ -30,18 +28,8 @@ export default function ProductDetails() {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
 
-  const cardVariants = {
-    hidden:  { opacity: 0, y: shouldReduceMotion ? 0 : 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
-  };
-
-  const relatedStagger = {
-    hidden:  {},
-    visible: { transition: { staggerChildren: 0.08 } },
-  };
-
   return (
-    <div>
+    <div className="animate-page">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1.5 text-sm text-gray-500 flex-wrap">
@@ -52,22 +40,11 @@ export default function ProductDetails() {
           <span className="text-gray-800 font-medium">{product.name}</span>
         </nav>
 
-        {/* Main card — slides up on mount */}
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
+        {/* Main card */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Visual */}
           <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl min-h-64 md:min-h-80 flex items-center justify-center">
-            <motion.span
-              className="text-9xl select-none"
-              aria-hidden="true"
-              whileHover={shouldReduceMotion ? {} : { scale: 1.08, transition: { duration: 0.2 } }}
-            >
-              {product.emoji}
-            </motion.span>
+            <span className="text-9xl select-none" aria-hidden="true">{product.emoji}</span>
             {product.badge && (
               <span className="absolute top-4 right-4 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
                 {product.badge}
@@ -140,31 +117,17 @@ export default function ProductDetails() {
               ← Back to Products
             </button>
           </div>
-        </motion.div>
+        </div>
 
         {/* Related */}
         {related.length > 0 && (
           <section className="mt-12">
-            <motion.h2
-              className="text-lg font-bold text-gray-900 mb-4"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
-            >
-              More in {product.category}
-            </motion.h2>
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-              variants={shouldReduceMotion ? {} : relatedStagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
-            >
+            <h2 className="text-lg font-bold text-gray-900 mb-4">More in {product.category}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {related.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
-            </motion.div>
+            </div>
           </section>
         )}
       </div>

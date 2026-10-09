@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 
 const links = [
@@ -12,7 +11,6 @@ const links = [
 export default function Navbar() {
   const { cartCount } = useCart();
   const [open, setOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
 
   const navClass = ({ isActive }) =>
     `text-sm font-medium transition-colors duration-150 ${
@@ -53,26 +51,11 @@ export default function Navbar() {
           >
             <span aria-hidden="true">🛒</span>
             <span className="hidden sm:inline">Cart</span>
-
-            {/* Badge springs in and pops when cartCount changes */}
-            <AnimatePresence>
-              {cartCount > 0 && (
-                <motion.span
-                  key={cartCount}
-                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.4 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.4 }}
-                  transition={
-                    shouldReduceMotion
-                      ? { duration: 0 }
-                      : { type: 'spring', stiffness: 500, damping: 20 }
-                  }
-                  className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center"
-                >
-                  {cartCount}
-                </motion.span>
-              )}
-            </AnimatePresence>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </Link>
 
           <button

@@ -1,19 +1,6 @@
-import { motion, useReducedMotion } from 'framer-motion';
 import ProductCard from './ProductCard';
 
-// Container orchestrates the staggered entrance of child cards.
-const gridVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.07,
-    },
-  },
-};
-
 export default function ProductGrid({ products }) {
-  const shouldReduceMotion = useReducedMotion();
-
   if (products.length === 0) {
     return (
       <div className="text-center py-24">
@@ -25,15 +12,10 @@ export default function ProductGrid({ products }) {
   }
 
   return (
-    <motion.div
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-      variants={shouldReduceMotion ? {} : gridVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       {products.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
-    </motion.div>
+    </div>
   );
 }
